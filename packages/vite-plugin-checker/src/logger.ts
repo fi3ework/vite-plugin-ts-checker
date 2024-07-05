@@ -420,10 +420,12 @@ export function normalizeStylelintDiagnostic(
           column: d.endColumn,
         },
       }
-
+      let cssSource = ''
+      if (diagnostic._postcssResult && 'css' in diagnostic._postcssResult) {
+        cssSource = diagnostic._postcssResult.css
+      }
       const codeFrame = createFrame({
-        // @ts-ignore
-        source: diagnostic._postcssResult.css ?? '',
+        source: cssSource,
         location: loc,
       })
 
