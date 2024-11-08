@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-const { diagnostic, base } = defineProps<{
+const { diagnostic, base, order } = defineProps<{
   diagnostic: any
   base: string
+  order: boolean
 }>()
 
 interface Link {
@@ -65,7 +66,7 @@ const errorSource = computed(() => {
 </script>
 
 <template>
-  <li class="message-item">
+  <li :class="`${order ? 'ordered-' : ''}message-item`">
     <pre class="message">
     <!-- @vue-ignore -->
     <span class="plugin" :style="{ color: checkerColorMap[diagnostic.checkerId] }"
@@ -85,9 +86,25 @@ li {
   list-style: none;
 }
 
-.message-item {
+.message-item, .ordered-message-item {
   border-bottom: 1px dotted #666;
   padding: 12px 0 0 0;
+}
+
+.ordered-message-item:has(.message-body-0) {
+    order: 1;
+}
+
+.ordered-message-item:has(.message-body-1) {
+    order: 0;
+}
+
+.ordered-message-item:has(.message-body-2) {
+    order: 2;
+}
+
+.ordered-message-item:has(.message-body-3) {
+    order: 3;
 }
 
 .message {

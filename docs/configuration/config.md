@@ -45,6 +45,13 @@ Shared configuration to control the checker behaviors of the plugin.
          * @default no default value
          */
         panelStyle?: string
+        /**
+         * The sort order of the messages in overlay:
+         * - Set `gravity` to sort by message gravity (errors first, warnings second, suggestions third & messages fourth).
+         * - Set nothing to keep default sort order.
+         * @default no default value
+         */
+        messageOrder?: 'gravity'
       }
   /**
    * stdout in terminal which starts the Vite server in dev mode.
