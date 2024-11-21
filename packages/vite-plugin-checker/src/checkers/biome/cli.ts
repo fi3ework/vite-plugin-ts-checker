@@ -31,6 +31,7 @@ export function runBiome(command: string, cwd: string) {
       command,
       {
         cwd,
+        maxBuffer: Number.POSITIVE_INFINITY
       },
       (error, stdout, stderr) => {
         resolve([...parseBiomeOutput(stdout)])
