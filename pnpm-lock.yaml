@@ -207,7 +207,7 @@ importers:
         specifier: ^1.8.3
         version: 1.8.3
       '@types/eslint':
-        specifier: ^7.2.14
+        specifier: ^7.29.0
         version: 7.29.0
       '@types/fs-extra':
         specifier: ^11.0.1
