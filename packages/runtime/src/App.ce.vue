@@ -44,10 +44,11 @@ if (props?.overlayConfig?.initialIsOpen === 'error') {
   })
 }
 
-const userCollapsed = ref<boolean | undefined>(undefined)
+const userCollapsed = ref<boolean>(sessionStorage.userCollapsed === "true")
 
 const toggle = () => {
   userCollapsed.value = !(userCollapsed.value ?? initialCollapsed.value)
+  sessionStorage.userCollapsed = userCollapsed.value
 }
 
 const collapsed = computed<boolean>(() => userCollapsed.value ?? initialCollapsed.value)
