@@ -4,7 +4,7 @@ import path from 'node:path'
 import { Duplex } from 'node:stream'
 import chalk from 'chalk'
 import chokidar from 'chokidar'
-import glob from 'fast-glob'
+import { globSync } from 'tinyglobby'
 import { VLS } from 'vls'
 import type { TextDocument } from 'vscode-languageserver-textdocument'
 import {
@@ -254,7 +254,7 @@ async function getDiagnostics(
     options,
   )
 
-  const files = glob.sync([...watchedDidChangeContentGlob], {
+  const files = globSync([...watchedDidChangeContentGlob], {
     cwd: workspaceUri.fsPath,
     ignore: ['node_modules/**'],
   })
