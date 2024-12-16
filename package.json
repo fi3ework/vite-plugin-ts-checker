@@ -40,7 +40,7 @@
     "@types/babel__code-frame": "^7.0.6",
     "@types/debug": "^4.1.12",
     "@types/fs-extra": "^11.0.1",
-    "@types/klaw": "^3.0.3",
+    "@types/klaw": "^3.0.6",
     "@types/minimist": "^1.2.2",
     "@types/node": "^16.0.0",
     "@types/prompts": "^2.0.13",
