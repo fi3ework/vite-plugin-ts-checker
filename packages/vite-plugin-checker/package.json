@@ -55,7 +55,7 @@
     "@biomejs/biome": "^1.8.3",
     "@types/eslint": "^7.2.14",
     "@types/fs-extra": "^11.0.1",
-    "@vue/language-core": "~2.1.6",
+    "@vue/language-core": "~2.2.0",
     "esbuild": "^0.14.27",
     "meow": "^9.0.0",
     "npm-run-all2": "^5.0.0",
