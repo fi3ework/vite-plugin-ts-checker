@@ -56,7 +56,7 @@
     "@types/eslint": "^7.2.14",
     "@types/fs-extra": "^11.0.1",
     "@vue/language-core": "~2.1.6",
-    "esbuild": "^0.14.27",
+    "esbuild": "^0.25.0",
     "meow": "^9.0.0",
     "npm-run-all2": "^5.0.0",
     "stylelint": "^14.0.0",
