@@ -44,11 +44,11 @@ if (props?.overlayConfig?.initialIsOpen === 'error') {
   })
 }
 
-const userCollapsed = ref<boolean>(sessionStorage.userCollapsed === "true")
+const userCollapsed = ref<boolean>(sessionStorage.vite_checker_overlay_collapsed === "true")
 
 const toggle = () => {
   userCollapsed.value = !(userCollapsed.value ?? initialCollapsed.value)
-  sessionStorage.userCollapsed = userCollapsed.value
+  sessionStorage.vite_checker_overlay_collapsed = userCollapsed.value
 }
 
 const collapsed = computed<boolean>(() => userCollapsed.value ?? initialCollapsed.value)
