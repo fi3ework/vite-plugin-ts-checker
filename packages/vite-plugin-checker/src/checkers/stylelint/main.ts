@@ -7,6 +7,7 @@ import { translateOptions } from './options.js'
 
 import { Checker } from '../../Checker.js'
 import { FileDiagnosticManager } from '../../FileDiagnosticManager.js'
+import { createIgnore } from '../../glob.js'
 import {
   composeCheckerSummary,
   consoleLog,
@@ -121,11 +122,11 @@ const createDiagnostic: CreateDiagnostic<'stylelint'> = (pluginConfig) => {
       dispatchDiagnostics()
 
       // watch lint
-      const watcher = chokidar.watch([], {
+      const watcher = chokidar.watch(root, {
         cwd: root,
-        ignored: (path: string) => path.includes('node_modules'),
+        ignored: createIgnore(root, translatedOptions.files),
       })
-      watcher.add(translatedOptions.files as string)
+
       watcher.on('change', async (filePath) => {
         handleFileChange(filePath, 'change')
       })

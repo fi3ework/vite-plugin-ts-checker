@@ -2,9 +2,9 @@ import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parentPort } from 'node:worker_threads'
-import chalk from 'chalk'
+import colors from 'picocolors'
 import invariant from 'tiny-invariant'
-import ts from 'typescript'
+import type * as typescript from 'typescript'
 
 import { Checker } from '../../Checker.js'
 import {
@@ -35,19 +35,25 @@ const createDiagnostic: CreateDiagnostic<'typescript'> = (pluginConfig) => {
       overlay = enableOverlay
       terminal = enableTerminal
     },
-    configureServer({ root }) {
+    async configureServer({ root }) {
       invariant(pluginConfig.typescript, 'config.typescript should be `false`')
       const finalConfig =
         pluginConfig.typescript === true
-          ? { root, tsconfigPath: 'tsconfig.json' }
+          ? {
+              root,
+              tsconfigPath: 'tsconfig.json',
+              typescriptPath: 'typescript',
+            }
           : {
               root: pluginConfig.typescript.root ?? root,
               tsconfigPath:
                 pluginConfig.typescript.tsconfigPath ?? 'tsconfig.json',
+              typescriptPath:
+                pluginConfig.typescript.typescriptPath ?? 'typescript',
             }
 
       let configFile: string | undefined
-
+      const ts: typeof typescript = await import(finalConfig.typescriptPath)
       configFile = ts.findConfigFile(
         finalConfig.root,
         ts.sys.fileExists,
@@ -63,7 +69,7 @@ const createDiagnostic: CreateDiagnostic<'typescript'> = (pluginConfig) => {
       let logChunk = ''
 
       // https://github.com/microsoft/TypeScript/blob/a545ab1ac2cb24ff3b1aaf0bfbfb62c499742ac2/src/compiler/watch.ts#L12-L28
-      const reportDiagnostic = (diagnostic: ts.Diagnostic) => {
+      const reportDiagnostic = (diagnostic: typescript.Diagnostic) => {
         const normalizedDiagnostic = normalizeTsDiagnostic(diagnostic)
         if (normalizedDiagnostic === null) {
           return
@@ -74,7 +80,7 @@ const createDiagnostic: CreateDiagnostic<'typescript'> = (pluginConfig) => {
           os.EOL + diagnosticToTerminalLog(normalizedDiagnostic, 'TypeScript')
       }
 
-      const reportWatchStatusChanged: ts.WatchStatusReporter = (
+      const reportWatchStatusChanged: typescript.WatchStatusReporter = (
         diagnostic,
         newLine,
         options,
@@ -110,13 +116,13 @@ const createDiagnostic: CreateDiagnostic<'typescript'> = (pluginConfig) => {
           if (terminal) {
             const color = errorCount && errorCount > 0 ? 'red' : 'green'
             consoleLog(
-              chalk[color](
+              colors[color](
                 logChunk +
-                os.EOL +
-                wrapCheckerSummary(
-                  'TypeScript',
-                  diagnostic.messageText.toString(),
-                )
+                  os.EOL +
+                  wrapCheckerSummary(
+                    'TypeScript',
+                    diagnostic.messageText.toString(),
+                  ),
               ),
             )
           }

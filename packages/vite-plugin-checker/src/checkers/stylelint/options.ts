@@ -97,6 +97,7 @@ export const translateOptions = async (command: string) => {
   const result = meow({
     autoHelp: false,
     autoVersion: false,
+    importMeta: import.meta,
     help: `
     Usage: stylelint [input] [options]
     Input: Files(s), glob(s), or nothing to use stdin.
@@ -182,7 +183,7 @@ export const translateOptions = async (command: string) => {
 	`,
     flags: {
       allowEmptyInput: {
-        alias: 'aei',
+        shortFlag: 'aei',
         type: 'boolean',
       },
       cache: {
@@ -210,60 +211,60 @@ export const translateOptions = async (command: string) => {
         type: 'string',
       },
       disableDefaultIgnores: {
-        alias: 'di',
+        shortFlag: 'di',
         type: 'boolean',
       },
       fix: {
         type: 'boolean',
       },
       formatter: {
-        alias: 'f',
+        shortFlag: 'f',
         default: 'string',
         type: 'string',
       },
       help: {
-        alias: 'h',
+        shortFlag: 'h',
         type: 'boolean',
       },
       ignoreDisables: {
-        alias: 'id',
+        shortFlag: 'id',
         type: 'boolean',
       },
       ignorePath: {
-        alias: 'i',
+        shortFlag: 'i',
         type: 'string',
         isMultiple: true,
       },
       ignorePattern: {
-        alias: 'ip',
+        shortFlag: 'ip',
         type: 'string',
         isMultiple: true,
       },
       maxWarnings: {
-        alias: 'mw',
+        shortFlag: 'mw',
         type: 'number',
       },
       outputFile: {
-        alias: 'o',
+        shortFlag: 'o',
         type: 'string',
       },
       printConfig: {
         type: 'boolean',
       },
       quiet: {
-        alias: 'q',
+        shortFlag: 'q',
         type: 'boolean',
       },
       reportDescriptionlessDisables: {
-        alias: 'rdd',
+        shortFlag: 'rdd',
         type: 'boolean',
       },
       reportInvalidScopeDisables: {
-        alias: 'risd',
+        shortFlag: 'risd',
         type: 'boolean',
       },
       reportNeedlessDisables: {
-        alias: 'rd',
+        shortFlag: 'rd',
         type: 'boolean',
       },
       stdin: {
@@ -273,11 +274,11 @@ export const translateOptions = async (command: string) => {
         type: 'string',
       },
       version: {
-        alias: 'v',
+        shortFlag: 'v',
         type: 'boolean',
       },
       globbyOptions: {
-        alias: 'go',
+        shortFlag: 'go',
         type: 'string',
       },
     },

@@ -1,7 +1,5 @@
-import { viteVueCESubStyle } from '@unplugin-vue-ce/sub-style'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
-import type { PluginOption } from 'vite'
 
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -10,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default defineConfig({
-  plugins: [vue(), viteVueCESubStyle() as PluginOption],
+  plugins: [vue()],
   define: {
     'import.meta.hot': 'import.meta.hot',
   },

@@ -1,15 +1,12 @@
 {
-  "private": true,
   "name": "docs",
+  "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vitepress dev",
-    "build": "vitepress build"
+    "build": "vitepress build",
+    "dev": "vitepress dev"
   },
   "dependencies": {
-    "@vueuse/core": "^8.9.4",
-    "body-scroll-lock": "4.0.0-beta.0",
-    "vitepress": "^1.2.3",
-    "vue": "^3.2.37"
+    "vitepress": "^1.6.3"
   }
 }

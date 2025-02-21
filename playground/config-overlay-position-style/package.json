@@ -1,26 +1,20 @@
 {
-  "private": true,
   "name": "@playground/config-overlay-position-style",
-  "type": "module",
   "version": "0.0.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview",
-    "lint": "eslint --ext .js,.ts ./src/**"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "dev": "vite",
+    "lint": "eslint --ext .js,.ts ./src/**",
+    "serve": "vite preview"
   },
   "devDependencies": {
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/eslint-plugin": "^5.59.0",
-    "@typescript-eslint/parser": "^5.59.0",
-    "eslint": "^8.57.0",
-    "typescript": "^5.5.3",
-    "vite": "^5.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.57.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1",
     "vite-plugin-checker": "workspace:*"
   }
 }

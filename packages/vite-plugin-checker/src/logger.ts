@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import os from 'node:os'
-import chalk from 'chalk'
+import colors from 'picocolors'
 import strip from 'strip-ansi'
 import * as _vscodeUri from 'vscode-uri'
 
@@ -95,25 +95,27 @@ export function diagnosticToTerminalLog(
   name?: 'TypeScript' | 'vue-tsc' | 'VLS' | 'ESLint' | 'Stylelint' | 'Biome',
 ): string {
   const nameInLabel = name ? `(${name})` : ''
-  const boldBlack = chalk.bold.rgb(0, 0, 0)
+  const boldBlack = (str: string) => colors.bold(colors.black(str))
 
   const labelMap: Record<DiagnosticLevel, string> = {
-    [DiagnosticLevel.Error]: boldBlack.bgRedBright(` ERROR${nameInLabel} `),
-    [DiagnosticLevel.Warning]: boldBlack.bgYellowBright(
-      ` WARNING${nameInLabel} `,
+    [DiagnosticLevel.Error]: boldBlack(
+      colors.bgRedBright(` ERROR${nameInLabel} `),
     ),
-    [DiagnosticLevel.Suggestion]: boldBlack.bgBlueBright(
-      ` SUGGESTION${nameInLabel} `,
+    [DiagnosticLevel.Warning]: boldBlack(
+      colors.bgYellowBright(` WARNING${nameInLabel} `),
     ),
-    [DiagnosticLevel.Message]: boldBlack.bgCyanBright(
-      ` MESSAGE${nameInLabel} `,
+    [DiagnosticLevel.Suggestion]: boldBlack(
+      colors.bgBlueBright(` SUGGESTION${nameInLabel} `),
+    ),
+    [DiagnosticLevel.Message]: boldBlack(
+      colors.bgCyanBright(` MESSAGE${nameInLabel} `),
     ),
   }
 
   const levelLabel = labelMap[d.level ?? DiagnosticLevel.Error]
-  const fileLabel = `${boldBlack.bgCyanBright(' FILE ')} `
+  const fileLabel = `${boldBlack(colors.bgCyanBright(' FILE '))} `
   const position = d.loc
-    ? `${chalk.yellow(d.loc.start.line)}:${chalk.yellow(d.loc.start.column)}`
+    ? `${colors.yellow(d.loc.start.line)}:${colors.yellow(d.loc.start.column || '')}`
     : ''
 
   return [
@@ -200,7 +202,7 @@ export function composeCheckerSummary(
   const hasError = errorCount > 0
   const hasWarning = warningCount > 0
   const color = hasError ? 'red' : hasWarning ? 'yellow' : 'green'
-  return chalk[color](wrapCheckerSummary(checkerName, message))
+  return colors[color](wrapCheckerSummary(checkerName, message))
 }
 
 /* ------------------------------- TypeScript ------------------------------- */

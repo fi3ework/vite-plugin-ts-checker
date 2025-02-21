@@ -8,6 +8,7 @@ import invariant from 'tiny-invariant'
 
 import { Checker } from '../../Checker.js'
 import { FileDiagnosticManager } from '../../FileDiagnosticManager.js'
+import { createIgnore } from '../../glob.js'
 import {
   composeCheckerSummary,
   consoleLog,
@@ -141,18 +142,18 @@ const createDiagnostic: CreateDiagnostic<'eslint'> = (pluginConfig) => {
       }
 
       // initial lint
-      const files = options._.slice(1)
+      const files = options._.slice(1) as string[]
       const diagnostics = await eslint.lintFiles(files)
 
       manager.initWith(diagnostics.flatMap((p) => normalizeEslintDiagnostic(p)))
       dispatchDiagnostics()
 
       // watch lint
-      const watcher = chokidar.watch([], {
+      const watcher = chokidar.watch(root, {
         cwd: root,
-        ignored: (path: string) => path.includes('node_modules'),
+        ignored: createIgnore(root, files),
       })
-      watcher.add(files)
+
       watcher.on('change', async (filePath) => {
         handleFileChange(filePath, 'change')
       })

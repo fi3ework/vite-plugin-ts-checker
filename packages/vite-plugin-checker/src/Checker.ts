@@ -14,7 +14,7 @@ if (!(isMainThread || isInVitestEntryThread)) {
   process.stdout.isTTY = true
 }
 
-export interface CheckerMeta<T extends BuildInCheckerNames> {
+interface CheckerMeta<T extends BuildInCheckerNames> {
   name: T
   absFilePath: string
   createDiagnostic: CreateDiagnostic<T>

@@ -12,6 +12,10 @@ interface TsConfigOptions {
    */
   tsconfigPath: string
   /**
+   * path to typescript package
+   */
+  typescriptPath: string
+  /**
    * root path of cwd
    */
   root: string

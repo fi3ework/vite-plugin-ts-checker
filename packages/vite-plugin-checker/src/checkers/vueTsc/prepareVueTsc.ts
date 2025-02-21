@@ -1,10 +1,8 @@
-import { access, readFile, rm, writeFile } from 'node:fs/promises'
+import { access, cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path, { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import fsExtra from 'fs-extra'
 
-const { copy, mkdir } = fsExtra
 const _require = createRequire(import.meta.url)
 
 // isomorphic __dirname https://antfu.me/posts/isomorphic-dirname
@@ -54,9 +52,9 @@ export async function prepareVueTsc() {
 
   if (shouldBuildFixture) {
     await rm(targetTsDir, { force: true, recursive: true })
-    await mkdir(targetTsDir)
+    await mkdir(targetTsDir, { recursive: true })
     const sourceTsDir = path.resolve(_require.resolve('typescript'), '../..')
-    await copy(sourceTsDir, targetTsDir)
+    await cp(sourceTsDir, targetTsDir, { recursive: true })
     await writeFile(vueTscFlagFile, proxyApiPath)
 
     // 2. sync modification of lib/tsc.js with vue-tsc

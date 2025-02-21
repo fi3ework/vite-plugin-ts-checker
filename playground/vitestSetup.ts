@@ -1,5 +1,6 @@
-import execa from 'execa'
-import fs from 'fs-extra'
+import { execa } from 'execa'
+import fs from 'node:fs/promises'
+import { existsSync } from 'node:fs'
 import type * as http from 'node:http'
 import os from 'node:os'
 import path, { dirname, join, resolve } from 'node:path'
@@ -7,7 +8,7 @@ import { chromium } from 'playwright-chromium'
 import strip from 'strip-ansi'
 import { createServer, mergeConfig } from 'vite'
 import { beforeAll, expect } from 'vitest'
-import type { Checker } from 'vite-plugin-checker/dist/Checker'
+import type { Checker } from '../packages/vite-plugin-checker/src/Checker'
 
 import { normalizeLogSerializer } from './serializers'
 
@@ -88,7 +89,7 @@ beforeAll(async (s) => {
     return
   }
 
-  const wsEndpoint = fs.readFileSync(join(DIR, 'wsEndpoint'), 'utf-8')
+  const wsEndpoint = await fs.readFile(join(DIR, 'wsEndpoint'), 'utf-8')
   if (!wsEndpoint) {
     throw new Error('wsEndpoint not found')
   }
@@ -109,12 +110,12 @@ beforeAll(async (s) => {
 
       // when `root` dir is present, use it as vite's root
       const testCustomRoot = resolve(testDir, 'root')
-      rootDir = fs.existsSync(testCustomRoot) ? testCustomRoot : testDir
+      rootDir = existsSync(testCustomRoot) ? testCustomRoot : testDir
 
       const testCustomServe = [
         resolve(dirname(rootDir), 'serve.ts'),
         resolve(dirname(rootDir), 'serve.js'),
-      ].find((i) => fs.existsSync(i))
+      ].find((i) => existsSync(i))
 
       if (testCustomServe && isServe) {
         // test has custom server configuration.
@@ -160,7 +161,7 @@ export async function startDefaultServe({
   const testCustomConfig = resolve(testDir, 'vite.config.js')
 
   let config: InlineConfig | undefined
-  if (fs.existsSync(testCustomConfig)) {
+  if (existsSync(testCustomConfig)) {
     // test has custom server configuration.
     config = await import(testCustomConfig).then((r) => r.default)
   }

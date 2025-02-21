@@ -16,6 +16,31 @@ on:
   pull_request:
 
 jobs:
+  release-nightly:
+    if: github.repository_owner == 'fi3ework'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set node version to latest LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'pnpm'
+
+      - name: Install deps
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+      - name: 📦 release pkg.pr.new
+        run: pnpm pkg-pr-new publish --compact './packages/vite-plugin-checker'
+
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -79,22 +104,17 @@ jobs:
       - name: Publint
         run: pnpm run publint
 
+      - name: Knip
+        run: pnpm run test-knip
+
       - name: Type check
         run: pnpm run type-check
 
       - name: Test unit
         run: pnpm run test-unit
 
-      - name: Test serve (ESM)
+      - name: Test serve
         run: pnpm run test-serve
 
-      - name: Test build (ESM)
+      - name: Test build
         run: pnpm run test-build
-
-      - name: Test serve (CJS)
-        if: ${{ matrix.node_version == 18 && matrix.os == 'ubuntu-latest' }}
-        run: pnpm run test-serve-cjs
-
-      - name: Test build (CJS)
-        if: ${{ matrix.node_version == 18 && matrix.os == 'ubuntu-latest' }}
-        run: pnpm run test-build-cjs

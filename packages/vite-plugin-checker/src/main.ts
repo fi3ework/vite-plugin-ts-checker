@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process'
-import chalk from 'chalk'
-import npmRunPath from 'npm-run-path'
+import { type ProcessEnv, npmRunPathEnv } from 'npm-run-path'
+import colors from 'picocolors'
 
 import type { ConfigEnv, Logger, Plugin } from 'vite'
 import { Checker } from './Checker.js'
@@ -67,6 +67,7 @@ export function checker(userConfig: UserPluginConfig): Plugin {
   let viteMode: ConfigEnv['command'] | undefined
   let buildWatch = false
   let logger: Logger | null = null
+  let checkerPromise: Promise<void> | null = null
 
   return {
     name: 'vite-plugin-checker',
@@ -105,7 +106,11 @@ export function checker(userConfig: UserPluginConfig): Plugin {
       isProduction ||= config.isProduction || config.command === 'build'
       buildWatch = !!config.build.watch
     },
-    buildEnd() {
+    async buildEnd() {
+      if (viteMode !== 'serve') {
+        await checkerPromise
+      }
+
       if (initialized) return
 
       if (viteMode === 'serve') {
@@ -154,25 +159,24 @@ export function checker(userConfig: UserPluginConfig): Plugin {
       // run a bin command in a separated process
       if (!isProduction || !enableBuild) return
 
-      const localEnv = npmRunPath.env({
+      const localEnv = npmRunPathEnv({
         env: process.env,
         cwd: process.cwd(),
         execPath: process.execPath,
       })
 
-      // spawn an async runner that we don't wait for in order to avoid blocking the build from continuing in parallel
-      ;(async () => {
-        const exitCodes = await Promise.all(
-          checkers.map((checker) =>
-            spawnChecker(checker, userConfig, localEnv),
-          ),
-        )
+      const spawnedCheckers = checkers.map((checker) =>
+        spawnChecker(checker, userConfig, localEnv),
+      )
+
+      // wait for checker states while avoiding blocking the build from continuing in parallel
+      checkerPromise = Promise.all(spawnedCheckers).then((exitCodes) => {
         const exitCode = exitCodes.find((code) => code !== 0) ?? 0
         // do not exit the process if run `vite build --watch`
         if (exitCode !== 0 && !buildWatch) {
           process.exit(exitCode)
         }
-      })()
+      })
     },
     configureServer(server) {
       if (initialized) return
@@ -219,7 +223,7 @@ export function checker(userConfig: UserPluginConfig): Plugin {
       } else {
         setTimeout(() => {
           logger!.warn(
-            chalk.yellow(
+            colors.yellow(
               '[vite-plugin-checker]: `server.ws.on` is introduced to Vite in 2.6.8, see [PR](https://github.com/vitejs/vite/pull/5273) and [changelog](https://github.com/vitejs/vite/blob/main/packages/vite/CHANGELOG.md#268-2021-10-18). \nvite-plugin-checker relies on `server.ws.on` to send overlay message to client. Support for Vite < 2.6.8 will be removed in the next major version release.',
             ),
           )
@@ -233,7 +237,7 @@ export function checker(userConfig: UserPluginConfig): Plugin {
 function spawnChecker(
   checker: ServeAndBuildChecker,
   userConfig: Partial<PluginConfig>,
-  localEnv: npmRunPath.ProcessEnv,
+  localEnv: ProcessEnv,
 ) {
   return new Promise<number>((resolve) => {
     const buildBin = checker.build.buildBin

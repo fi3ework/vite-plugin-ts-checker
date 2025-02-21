@@ -1,7 +1,7 @@
-import fs from 'fs-extra'
+import { rmSync } from 'node:fs'
+import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import glob from 'fast-glob'
 import { chromium } from 'playwright-chromium'
 
 import type { BrowserServer } from 'playwright-chromium'
@@ -15,15 +15,16 @@ export async function setup(): Promise<void> {
     args: process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : undefined,
   })
 
-  await fs.mkdirp(DIR)
+  await fs.mkdir(DIR, { recursive: true })
   await fs.writeFile(path.join(DIR, 'wsEndpoint'), browserServer.wsEndpoint())
 
   const tempDir = path.resolve(__dirname, '../playground-temp')
-  await fs.ensureDir(tempDir)
-  await fs.emptyDir(tempDir)
+  await fs.rm(tempDir, { force: true, recursive: true })
+  await fs.mkdir(tempDir, { recursive: true })
   await fs
-    .copy(path.resolve(__dirname, '../playground'), tempDir, {
+    .cp(path.resolve(__dirname, '../playground'), tempDir, {
       dereference: false,
+      recursive: true,
       filter(file) {
         const _file = file.replace(/\\/g, '/')
         return !_file.includes('__tests__') && !file.match(/dist(\/|$)/)
@@ -38,20 +39,11 @@ export async function setup(): Promise<void> {
         throw error
       }
     })
-
-  if (process.env['VITEST_TEST_CJS']) {
-    const packageJsons = await glob(`${tempDir}/**/package.json`)
-    for (const packageJson of packageJsons) {
-      const packageJsonContents = await fs.readJson(packageJson)
-      delete packageJsonContents['module']
-      await fs.writeJson(packageJson, packageJsonContents, { spaces: 2 })
-    }
-  }
 }
 
 export async function teardown(): Promise<void> {
   browserServer?.close()
   if (!process.env.VITE_PRESERVE_BUILD_ARTIFACTS) {
-    fs.removeSync(path.resolve(__dirname, '../playground-temp'))
+    rmSync(path.resolve(__dirname, '../playground-temp'), { force: true, recursive: true })
   }
 }

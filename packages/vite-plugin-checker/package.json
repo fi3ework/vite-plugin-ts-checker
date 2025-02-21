@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-checker",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Vite plugin that runs TypeScript type checker on a separate process.",
   "keywords": [
     "vite",
@@ -17,66 +17,56 @@
   "author": "fi3ework <fi3ework@gmail.com>",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/esm/main.d.ts",
-      "import": "./dist/esm/main.js",
-      "require": "./dist/cjs/main.js"
-    }
+    ".": "./dist/main.js"
   },
-  "main": "./dist/cjs/main.js",
-  "types": "./dist/esm/main.d.ts",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "files": [
     "dist",
     "!dist/checkers/vueTsc/typescript-vue-tsc"
   ],
   "scripts": {
-    "dev": "tsup --watch",
+    "build": "tsup",
+    "build:test": "tsup --sourcemap inline",
     "clean": "rimraf dist",
-    "build": "tsup && node ../../scripts/patchCjs.mjs",
-    "build:test": "tsup --sourcemap inline"
+    "dev": "tsup --watch"
   },
   "dependencies": {
-    "@babel/code-frame": "^7.12.13",
-    "ansi-escapes": "^4.3.0",
-    "chalk": "^4.1.1",
-    "chokidar": "^3.5.1",
-    "commander": "^8.0.0",
-    "fast-glob": "^3.2.7",
-    "fs-extra": "^11.1.0",
-    "npm-run-path": "^4.0.1",
-    "strip-ansi": "^6.0.0",
-    "tiny-invariant": "^1.1.0",
-    "vscode-languageclient": "^7.0.0",
-    "vscode-languageserver": "^7.0.0",
-    "vscode-languageserver-textdocument": "^1.0.1",
-    "vscode-uri": "^3.0.2"
+    "@babel/code-frame": "^7.26.2",
+    "chokidar": "^4.0.3",
+    "npm-run-path": "^6.0.0",
+    "picocolors": "^1.1.1",
+    "picomatch": "^4.0.2",
+    "strip-ansi": "^7.1.0",
+    "tiny-invariant": "^1.3.3",
+    "tinyglobby": "^0.2.12",
+    "vscode-uri": "^3.1.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "@types/eslint": "^7.2.14",
-    "@types/fs-extra": "^11.0.1",
-    "@vue/language-core": "~2.1.6",
-    "esbuild": "^0.14.27",
-    "meow": "^9.0.0",
-    "npm-run-all2": "^5.0.0",
-    "stylelint": "^14.0.0",
-    "tsup": "^6.7.0",
-    "typescript": "^5.5.3",
+    "@types/eslint": "^7.29.0",
+    "@types/picomatch": "^3.0.2",
+    "@vue/language-core": "~2.2.2",
+    "meow": "^13.2.0",
+    "stylelint": "^16.14.1",
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3",
     "vls": "^0.8.5",
-    "vti": "^0.1.11",
-    "vue-tsc": "~2.1.6"
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12",
+    "vue-tsc": "~2.2.2"
   },
   "peerDependencies": {
     "@biomejs/biome": ">=1.7",
     "eslint": ">=7",
-    "meow": "^9.0.0",
+    "meow": "^13.2.0",
     "optionator": "^0.9.1",
-    "stylelint": ">=13",
+    "stylelint": ">=16",
     "typescript": "*",
     "vite": ">=2.0.0",
     "vls": "*",
     "vti": "*",
-    "vue-tsc": "~2.1.6"
+    "vue-tsc": "~2.2.2"
   },
   "peerDependenciesMeta": {
     "@biomejs/biome": {

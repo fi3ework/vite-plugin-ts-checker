@@ -6,11 +6,6 @@ const WS_CHECKER_RECONNECT_EVENT = 'vite-plugin-checker:reconnect'
 
 const onCustomMessage: any[] = []
 const onReconnectMessage: any[] = []
-const onConfigMessage = []
-
-export function listenToConfigMessage(cb: () => any) {
-  onConfigMessage.push(cb)
-}
 
 export function listenToCustomMessage(cb: (data: any) => any) {
   onCustomMessage.push(cb)
