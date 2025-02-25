@@ -6,6 +6,7 @@ withDefaults(
     ulStyle?: string
     base: string
     checkerResults: any[]
+    order: boolean
   }>(),
   {
     ulStyle: '',
@@ -16,7 +17,7 @@ withDefaults(
 <template>
   <ul :style="ulStyle">
     <li v-for="(checkerResult, index) in checkerResults" :key="index">
-      <Checker :diagnostics="checkerResult.diagnostics" :base="base" :index="index" />
+      <Checker :diagnostics="checkerResult.diagnostics" :base="base" :order="order" :index="index" />
     </li>
   </ul>
 </template>

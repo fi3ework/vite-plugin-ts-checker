@@ -4,6 +4,7 @@ import Diagnostic from './Diagnostic.ce.vue'
 defineProps<{
   diagnostics?: any[]
   base: string
+  order: boolean
 }>()
 
 const key = (diagnostic: any): string => {
@@ -17,13 +18,15 @@ const key = (diagnostic: any): string => {
 
 <template>
   <ul>
-    <Diagnostic v-for="d in diagnostics" :diagnostic="d" :base="base" :key="key(d)" />
+    <Diagnostic v-for="d in diagnostics" :diagnostic="d" :base="base" :order="order" :key="key(d)" />
   </ul>
 </template>
 
 <style>
 ul {
   list-style: none;
+  display: flex;
+  flex-direction: column;
 }
 
 ul {

@@ -51,6 +51,8 @@ const toggle = () => {
 }
 
 const collapsed = computed<boolean>(() => userCollapsed.value ?? initialCollapsed.value)
+
+const orderedByMessageGravity = computed<boolean>(() => props?.overlayConfig?.messageOrder === 'gravity')
 </script>
 
 <template>
@@ -68,7 +70,7 @@ const collapsed = computed<boolean>(() => userCollapsed.value ?? initialCollapse
       :style="overlayConfig?.panelStyle"
     >
       <div class="list-scroll">
-        <List :checkerResults="checkerResults" :base="base" ulStyle="margin-bottom: 36px;" />
+        <List :checkerResults="checkerResults" :base="base" :order="orderedByMessageGravity" ulStyle="margin-bottom: 36px;" />
       </div>
     </main>
   </template>
