@@ -136,8 +136,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       '@vue/language-core':
-        specifier: ~2.2.4
-        version: 2.2.4(typescript@5.7.3)
+        specifier: ~2.2.8
+        version: 2.2.8(typescript@5.7.3)
       meow:
         specifier: ^13.2.0
         version: 13.2.0
@@ -2141,8 +2141,8 @@ packages:
       typescript:
         optional: true
 
-  '@vue/language-core@2.2.4':
-    resolution: {integrity: sha512-eGGdw7eWUwdIn9Fy/irJ7uavCGfgemuHQABgJ/hU1UgZFnbTg9VWeXvHQdhY+2SPQZWJqWXvRWIg67t4iWEa+Q==}
+  '@vue/language-core@2.2.8':
+    resolution: {integrity: sha512-rrzB0wPGBvcwaSNRriVWdNAbHQWSf0NlGqgKHK5mEkXpefjUlVRP62u03KvwZpvKVjRnBIQ/Lwre+Mx9N6juUQ==}
     peerDependencies:
       typescript: '*'
     peerDependenciesMeta:
@@ -6627,7 +6627,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.7.3
 
-  '@vue/language-core@2.2.4(typescript@5.7.3)':
+  '@vue/language-core@2.2.8(typescript@5.7.3)':
     dependencies:
       '@volar/language-core': 2.4.11
       '@vue/compiler-dom': 3.5.13

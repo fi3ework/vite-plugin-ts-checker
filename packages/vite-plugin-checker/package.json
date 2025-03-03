@@ -45,7 +45,7 @@
   "devDependencies": {
     "@types/eslint": "^7.29.0",
     "@types/picomatch": "^3.0.2",
-    "@vue/language-core": "~2.2.4",
+    "@vue/language-core": "~2.2.8",
     "meow": "^13.2.0",
     "stylelint": "^16.14.1",
     "tsup": "^8.3.6",
